@@ -1,0 +1,15 @@
+.react-flow-area{
+    position: relative;
+    width: calc(100% - 300px);
+    height: 100%;
+    background: #fff;
+}
+
+.react-flow-button-area{
+    position: absolute;
+    z-index: 999;
+}
+
+.react-flow-button-area button{
+    cursor: pointer;
+}
