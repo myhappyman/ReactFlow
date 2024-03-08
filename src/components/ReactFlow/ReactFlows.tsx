@@ -7,6 +7,7 @@ import ReactFlow, {
   Controls,
   MiniMap,
   Node,
+  ReactFlowInstance,
   useEdgesState,
   useNodesState,
 } from 'reactflow';
@@ -26,7 +27,7 @@ const ReactFlows = () => {
   const reactFlowWrapper = useRef<HTMLDivElement | null>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
 
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
   const getInfo = () => {
@@ -52,25 +53,25 @@ const ReactFlows = () => {
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
 
-      const type = event.dataTransfer.getData('application/reactflow');
+      const label = event.dataTransfer.getData('application/reactflow');
 
       // check if the dropped element is valid
-      if (typeof type === 'undefined' || !type) {
+      if (typeof label === 'undefined' || !label) {
         return;
       }
 
-      // reactFlowInstance.project was renamed to reactFlowInstance.screenToFlowPosition
-      // and you don't need to subtract the reactFlowBounds.left/top anymore
-      // details: https://reactflow.dev/whats-new/2023-11-10
+      if (!reactFlowInstance) {
+        return;
+      }
+
       const position = reactFlowInstance.screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
       });
       const newNode = {
         id: getId(),
-        type,
         position,
-        data: { label: `${type}`, type: 'data' },
+        data: { label: `${label}`, type: 'data' },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -83,11 +84,16 @@ const ReactFlows = () => {
     // Additional actions on double-click
   };
 
+  const onActiveSelectArea = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.shiftKey;
+  };
+
   return (
     <div className="react-flow-area" ref={reactFlowWrapper}>
       <div className="react-flow-button-area">
         <button onClick={getInfo}>GetInfo</button>
         <button onClick={addData}>Data추가</button>
+        <button onClick={onActiveSelectArea}>영역선택</button>
       </div>
       <ReactFlow
         nodes={nodes}
