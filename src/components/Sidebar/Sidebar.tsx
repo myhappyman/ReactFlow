@@ -24,7 +24,7 @@ const DataItem = ({ name }: DataItemProps) => {
     event.dataTransfer.effectAllowed = 'move';
   };
   return (
-    <span draggable onDragStart={(event) => onDragStart(event, name)}>
+    <span className="data-circle" draggable onDragStart={(event) => onDragStart(event, name)}>
       {name}
     </span>
   );
