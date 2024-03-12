@@ -20,7 +20,7 @@ const ReactFlows = () => {
     onActiveSelectArea,
     onSelectionChange,
     onSelectItemChecker,
-    onPanMouseMove,
+    onMouseMove,
   } = useReactFlowsHooks();
 
   return (
@@ -43,7 +43,7 @@ const ReactFlows = () => {
         onDragOver={onDragOver}
         onNodeDoubleClick={onNodeDoubleClick}
         onSelectionChange={onSelectionChange}
-        onPaneMouseMove={onPanMouseMove}
+        onMouseMove={onMouseMove}
         fitView
       >
         {/*<Background color="#ccc" variant="dots" />*/}
